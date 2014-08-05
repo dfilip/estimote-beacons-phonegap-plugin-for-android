@@ -49,7 +49,7 @@ function logError(errorMessage, methodName) {
  * Provides methods to interact with Estimote iBeacons.
  * @constructor
  */
-function EstimoteBeacons() {
+var EstimoteBeacons = function() {
 }
 
 /**
@@ -201,4 +201,17 @@ EstimoteBeacons.prototype.isBleSupported = function(successCallback, errorCallba
     );
 };
 
-module.exports = new EstimoteBeacons();
+
+
+if(!window.plugins) {
+    window.plugins = {};
+}
+if (!window.plugins.EstimoteBeacons) {
+    window.plugins.EstimoteBeacons = new EstimoteBeacons();
+}
+
+
+if( module.exports )
+{
+    module.exports = EstimoteBeacons;
+}
