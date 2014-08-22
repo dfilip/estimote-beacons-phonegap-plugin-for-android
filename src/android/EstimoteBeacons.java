@@ -199,11 +199,11 @@ public class EstimoteBeacons extends CordovaPlugin {
                 */
                 try{
                     JSONArray json = EstimoteBeacons.this.beaconsListToJSONArray( beacons );
-                    Log.d("EstimotePlugin::onEnter: "+json.toString());
+                    Log.d("DEBUG","EstimotePlugin::onEnter: "+json.toString());
                     String js = "javascript:"+onEnter+"("+json.toString()+")";
 
-                    Log.d("EstimotePlugin::onEnter: sending js");
-                    Log.d(js);
+                    Log.d("DEBUG","EstimotePlugin::onEnter: sending js");
+                    Log.d("DEBUG",js);
 
                     EstimoteBeacons.this._webView.sendJavascript(js);
                 }catch( JSONException e)
