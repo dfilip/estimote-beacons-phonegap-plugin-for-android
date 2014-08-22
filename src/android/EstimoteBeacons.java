@@ -81,7 +81,7 @@ public class EstimoteBeacons extends CordovaPlugin {
 
         try {
             if(action.equalsIgnoreCase(START_MONITORING_BEACONS_IN_REGION)) {
-                startMonitoringBeaconsInRegion(callbackContext, args.get("onEnter").toString(), args.get("onExit").toString());
+                startMonitoringBeaconsInRegion(callbackContext, args.getString("onEnter"), args.getString("onExit"));
                 return true;
             }
 
@@ -178,7 +178,7 @@ public class EstimoteBeacons extends CordovaPlugin {
                 callbackContext.sendPluginResult(pluginResult);
                 */
                 JSONArray json = EstimoteBeacons.this.beaconsListToJSONArray( beacons );
-                callbackContect.sendJavascript("javascript:"+onExit+"("+json.toString()+")");
+                callbackContext.sendJavascript("javascript:"+onExit+"("+json.toString()+")");
             }
 
             @Override
@@ -190,7 +190,7 @@ public class EstimoteBeacons extends CordovaPlugin {
                 callbackContext.sendPluginResult(pluginResult);
                 */
                 JSONArray json = EstimoteBeacons.this.beaconsListToJSONArray( beacons );
-                callbackContect.sendJavascript("javascript:"+onEnter+"("+json.toString()+")");
+                callbackContext.sendJavascript("javascript:"+onEnter+"("+json.toString()+")");
             }
 
         });
