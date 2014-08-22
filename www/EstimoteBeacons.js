@@ -56,7 +56,7 @@ var EstimoteBeacons = function() {
  * Starts monitoring beacons in region.
  * @param {Function} successCallback
  */
-EstimoteBeacons.prototype.startMonitoringBeaconsInRegion = function(successCallback) {
+EstimoteBeacons.prototype.startMonitoringBeaconsInRegion = function(successCallback, options) {
     var METHOD_NAME = 'startMonitoringBeaconsInRegion';
 
     if(!isFunction(successCallback)) {
@@ -69,7 +69,7 @@ EstimoteBeacons.prototype.startMonitoringBeaconsInRegion = function(successCallb
         ERROR_CALLBACK,
         PLUGIN_NAME,
         METHOD_NAME,
-        []
+        [options]
     );
 };
 

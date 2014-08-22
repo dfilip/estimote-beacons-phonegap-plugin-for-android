@@ -81,7 +81,7 @@ public class EstimoteBeacons extends CordovaPlugin {
 
         try {
             if(action.equalsIgnoreCase(START_MONITORING_BEACONS_IN_REGION)) {
-                startMonitoringBeaconsInRegion(callbackContext);
+                startMonitoringBeaconsInRegion(callbackContext, args.get('onEnter'), args.get('onExit'));
                 return true;
             }
 
@@ -167,23 +167,32 @@ public class EstimoteBeacons extends CordovaPlugin {
      * @param callbackContext The callback id used when calling back into JavaScript
      * @throws RemoteException
      */
-    private void startMonitoringBeaconsInRegion(final CallbackContext callbackContext) throws RemoteException {
+    private void startMonitoringBeaconsInRegion(final CallbackContext callbackContext, String onEnter, String onExit) throws RemoteException {
         beaconManager.setMonitoringListener(new BeaconManager.MonitoringListener() {
             @Override
             public void onExitedRegion(Region region) {
                 EstimoteBeacons.this.inRegion = 0;
+                /*
                 PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, EstimoteBeacons.this.inRegion);
                 pluginResult.setKeepCallback(true);
                 callbackContext.sendPluginResult(pluginResult);
+                */
+                JSONArray json = EstimoteBeacons.this.beaconsListToJSONArray( beacons );
+                callbackContect.sendJavascript("javascript:"+onExit+"("+json.toString()+")");
             }
 
             @Override
             public void onEnteredRegion(Region region, List<Beacon> beacons) {
                 EstimoteBeacons.this.inRegion = 1;
+                /*
                 PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, EstimoteBeacons.this.inRegion);
                 pluginResult.setKeepCallback(true);
                 callbackContext.sendPluginResult(pluginResult);
+                */
+                JSONArray json = EstimoteBeacons.this.beaconsListToJSONArray( beacons );
+                callbackContect.sendJavascript("javascript:"+onEnter+"("+json.toString()+")");
             }
+
         });
         beaconManager.connect(new BeaconManager.ServiceReadyCallback() {
             @Override
