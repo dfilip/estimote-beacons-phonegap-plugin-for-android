@@ -46,6 +46,8 @@ public class EstimoteBeacons extends CordovaPlugin {
     private PackageManager packageManager;
     private BluetoothAdapter bluetoothAdapter;
 
+    private CordovaWebView _webView;
+
     /**
      * Initializes the plugin.
      * @param cordova The context of the main Activity
@@ -66,6 +68,8 @@ public class EstimoteBeacons extends CordovaPlugin {
         //if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1) bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         //else bluetoothAdapter = (BluetoothAdapter) activity.getSystemService(Context.BLUETOOTH_SERVICE);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        _webView = webView;
     }
 
     /**
@@ -81,7 +85,10 @@ public class EstimoteBeacons extends CordovaPlugin {
 
         try {
             if(action.equalsIgnoreCase(START_MONITORING_BEACONS_IN_REGION)) {
-                startMonitoringBeaconsInRegion(callbackContext, args.getString("onEnter"), args.getString("onExit"));
+                JSONObject options = args.getJSONObject(0);
+                String onEnter = options.getString("onEnter");
+                String onExit = options.getString("onExit");
+                startMonitoringBeaconsInRegion(callbackContext, onEnter, onExit);
                 return true;
             }
 
@@ -172,13 +179,14 @@ public class EstimoteBeacons extends CordovaPlugin {
             @Override
             public void onExitedRegion(Region region) {
                 EstimoteBeacons.this.inRegion = 0;
-                /*
+                
                 PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, EstimoteBeacons.this.inRegion);
                 pluginResult.setKeepCallback(true);
                 callbackContext.sendPluginResult(pluginResult);
-                */
+                /*
                 JSONArray json = EstimoteBeacons.this.beaconsListToJSONArray( beacons );
-                callbackContext.sendJavascript("javascript:"+onExit+"("+json.toString()+")");
+                EstimoteBeacons.this._webView.sendJavascript("javascript:"+onExit+"("+json.toString()+")");
+                */
             }
 
             @Override
@@ -189,8 +197,15 @@ public class EstimoteBeacons extends CordovaPlugin {
                 pluginResult.setKeepCallback(true);
                 callbackContext.sendPluginResult(pluginResult);
                 */
-                JSONArray json = EstimoteBeacons.this.beaconsListToJSONArray( beacons );
-                callbackContext.sendJavascript("javascript:"+onEnter+"("+json.toString()+")");
+                try{
+                    JSONArray json = EstimoteBeacons.this.beaconsListToJSONArray( beacons );
+                    EstimoteBeacons.this._webView.sendJavascript("javascript:"+onEnter+"("+json.toString()+")");
+                }catch( JSONException e)
+                {
+                    System.out.println(e.getMessage());
+                    callbackContext.error(e.getMessage());
+                }
+                
             }
 
         });
