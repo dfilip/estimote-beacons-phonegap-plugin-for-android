@@ -81,7 +81,7 @@ public class EstimoteBeacons extends CordovaPlugin {
 
         try {
             if(action.equalsIgnoreCase(START_MONITORING_BEACONS_IN_REGION)) {
-                startMonitoringBeaconsInRegion(callbackContext, args.get('onEnter'), args.get('onExit'));
+                startMonitoringBeaconsInRegion(callbackContext, args.get("onEnter"), args.get("onExit"));
                 return true;
             }
 
