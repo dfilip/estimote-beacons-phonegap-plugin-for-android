@@ -81,7 +81,7 @@ public class EstimoteBeacons extends CordovaPlugin {
 
         try {
             if(action.equalsIgnoreCase(START_MONITORING_BEACONS_IN_REGION)) {
-                startMonitoringBeaconsInRegion(callbackContext, args.get("onEnter"), args.get("onExit"));
+                startMonitoringBeaconsInRegion(callbackContext, args.get("onEnter").toString(), args.get("onExit").toString());
                 return true;
             }
 
@@ -167,7 +167,7 @@ public class EstimoteBeacons extends CordovaPlugin {
      * @param callbackContext The callback id used when calling back into JavaScript
      * @throws RemoteException
      */
-    private void startMonitoringBeaconsInRegion(final CallbackContext callbackContext, String onEnter, String onExit) throws RemoteException {
+    private void startMonitoringBeaconsInRegion(final CallbackContext callbackContext, final String onEnter, final String onExit) throws RemoteException {
         beaconManager.setMonitoringListener(new BeaconManager.MonitoringListener() {
             @Override
             public void onExitedRegion(Region region) {
