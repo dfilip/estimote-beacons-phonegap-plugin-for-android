@@ -89,8 +89,8 @@ public class EstimoteBeacons extends CordovaPlugin {
                 String onEnter = options.getString("onEnter");
                 String onExit = options.getString("onExit");
 
-                double scan = options.getDouble("scanPeriod");
-                double wait = options.getDouble("waitPeriod");
+                long scan = options.getLong("scanPeriod");
+                long wait = options.getLong("waitPeriod");
 
                 startMonitoringBeaconsInRegion(callbackContext, onEnter, onExit, scan, wait);
                 return true;
@@ -179,7 +179,7 @@ public class EstimoteBeacons extends CordovaPlugin {
      * @throws RemoteException
      */
     private void startMonitoringBeaconsInRegion(final CallbackContext callbackContext, 
-        final String onEnter, final String onExit, final Double scanPeriod, final Double waitPeriod) throws RemoteException {
+        final String onEnter, final String onExit, final long scanPeriod, final long waitPeriod) throws RemoteException {
 
         beaconManager.setBackgroundScanPeriod(scanPeriod, waitPeriod);
 
