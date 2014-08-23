@@ -88,7 +88,11 @@ public class EstimoteBeacons extends CordovaPlugin {
                 JSONObject options = args.getJSONObject(0);
                 String onEnter = options.getString("onEnter");
                 String onExit = options.getString("onExit");
-                startMonitoringBeaconsInRegion(callbackContext, onEnter, onExit);
+
+                double scan = options.getDouble("scanPeriod");
+                double wait = options.getDouble("waitPeriod");
+
+                startMonitoringBeaconsInRegion(callbackContext, onEnter, onExit, scan, wait);
                 return true;
             }
 
@@ -174,7 +178,11 @@ public class EstimoteBeacons extends CordovaPlugin {
      * @param callbackContext The callback id used when calling back into JavaScript
      * @throws RemoteException
      */
-    private void startMonitoringBeaconsInRegion(final CallbackContext callbackContext, final String onEnter, final String onExit) throws RemoteException {
+    private void startMonitoringBeaconsInRegion(final CallbackContext callbackContext, 
+        final String onEnter, final String onExit, final Double scanPeriod, final Double waitPeriod) throws RemoteException {
+
+        beaconManager.setBackgroundScanPeriod(scanPeriod, waitPeriod);
+
         beaconManager.setMonitoringListener(new BeaconManager.MonitoringListener() {
             @Override
             public void onExitedRegion(Region region) {
