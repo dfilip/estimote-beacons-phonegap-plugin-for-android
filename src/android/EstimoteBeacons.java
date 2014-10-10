@@ -57,6 +57,8 @@ public class EstimoteBeacons extends CordovaPlugin {
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
 
+        Log.d(EstimoteBeacons.class.toString(), "init");
+
         final Activity activity = this.cordova.getActivity();
         final Context context = activity.getApplicationContext();
 
@@ -146,9 +148,11 @@ public class EstimoteBeacons extends CordovaPlugin {
      * @throws RemoteException
      */
     private void startRangingBeaconsInRegion() throws RemoteException {
+        Log.d(EstimoteBeacons.class.toString(), "startRangingBeaconsInRegion");
         beaconManager.setRangingListener(new BeaconManager.RangingListener() {
             @Override
             public void onBeaconsDiscovered(Region region, List<Beacon> beacons) {
+                Log.d(EstimoteBeacons.class.toString(), "onBeaconsDiscovered");
                 if(beacons == null || beacons.isEmpty()) {
                     Log.d("DEBUG", "No beacons");
                     //want to know if there aren't any beacons...
@@ -186,11 +190,14 @@ public class EstimoteBeacons extends CordovaPlugin {
     private void startMonitoringBeaconsInRegion(final CallbackContext callbackContext, 
         final String onEnter, final String onExit, final long scanPeriod, final long waitPeriod) throws RemoteException {
 
+        Log.d(EstimoteBeacons.class.toString(), "startMonitoringBeaconsInRegion");
+
         beaconManager.setBackgroundScanPeriod(scanPeriod, waitPeriod);
 
         beaconManager.setMonitoringListener(new BeaconManager.MonitoringListener() {
             @Override
             public void onExitedRegion(Region region) {
+                Log.d(EstimoteBeacons.class.toString(), "onExitedRegion");
                 EstimoteBeacons.this.inRegion = 0;
                 
                 PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, EstimoteBeacons.this.inRegion);
@@ -204,6 +211,7 @@ public class EstimoteBeacons extends CordovaPlugin {
 
             @Override
             public void onEnteredRegion(Region region, List<Beacon> beacons) {
+                Log.d(EstimoteBeacons.class.toString(), "entered region");
                 EstimoteBeacons.this.inRegion = 1;
                 /*
                 PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, EstimoteBeacons.this.inRegion);
